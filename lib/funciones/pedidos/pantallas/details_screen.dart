@@ -19,7 +19,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
   bool agregarExtraQueso = false;
   String nota = '';
 
-  double get total => widget.precio * cantidad + (agregarExtraQueso ? 0.75 : 0.0);
+  // Variable para el Radio
+  String _tipoPan = 'Blanco';
+
+  double get total =>
+      widget.precio * cantidad + (agregarExtraQueso ? 0.75 : 0.0);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +64,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
               // Nombre y precio
               Text(
                 widget.nombre,
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 6),
               Text(
@@ -75,16 +80,19 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    onPressed: () => setState(() => cantidad = (cantidad > 1 ? cantidad - 1 : 1)),
+                    onPressed: () =>
+                        setState(() => cantidad = (cantidad > 1 ? cantidad - 1 : 1)),
                     icon: const Icon(Icons.remove_circle_outline),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade200,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Text('Cantidad: $cantidad', style: const TextStyle(fontSize: 16)),
+                    child:
+                        Text('Cantidad: $cantidad', style: const TextStyle(fontSize: 16)),
                   ),
                   IconButton(
                     onPressed: () => setState(() => cantidad++),
@@ -95,7 +103,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
               const SizedBox(height: 12),
 
-              // Opciones: switch / checkbox example
+              // Checkbox
               Row(
                 children: [
                   Checkbox(
@@ -103,6 +111,34 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     onChanged: (v) => setState(() => agregarExtraQueso = v ?? false),
                   ),
                   const Text('Extra queso (+\$0.75)'),
+                ],
+              ),
+
+              const SizedBox(height: 12),
+
+              // Radio horizontal
+              Row(
+                children: [
+                  const Text('Tipo de pan: '),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Radio<String>(
+                          value: 'Blanco',
+                          groupValue: _tipoPan,
+                          onChanged: (v) => setState(() => _tipoPan = v!),
+                        ),
+                        const Text('Blanco'),
+                        Radio<String>(
+                          value: 'Integral',
+                          groupValue: _tipoPan,
+                          onChanged: (v) => setState(() => _tipoPan = v!),
+                        ),
+                        const Text('Integral'),
+                      ],
+                    ),
+                  ),
                 ],
               ),
 
@@ -128,8 +164,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Total', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                        Text('\$${total.toStringAsFixed(2)}', style: const TextStyle(fontSize: 18)),
+                        const Text('Total',
+                            style:
+                                TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        Text('\$${total.toStringAsFixed(2)}',
+                            style: const TextStyle(fontSize: 18)),
                       ],
                     ),
                     const Spacer(),
@@ -138,7 +177,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       icon: const Icon(Icons.add_shopping_cart),
                       label: const Text('Agregar'),
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
                       ),
                     ),
                   ],
@@ -152,16 +192,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _agregarAlCarrito() {
-    // En apps reales aquí enviarías el item al carrito (Provider/Riverpod/Bloc)
-    // Por ahora mostramos un Snackbar con la info
     final extras = agregarExtraQueso ? ' + queso' : '';
-    final mensaje = 'Agregaste ${widget.nombre} x$cantidad$extras\nNota: ${nota.isEmpty ? '—' : nota}';
+    final mensaje =
+        'Agregaste ${widget.nombre} x$cantidad$extras\nTipo de pan: $_tipoPan\nNota: ${nota.isEmpty ? '—' : nota}';
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(mensaje)),
     );
-
-    // Si quieres volver a la pantalla anterior:
-    // Navigator.pop(context);
   }
 }

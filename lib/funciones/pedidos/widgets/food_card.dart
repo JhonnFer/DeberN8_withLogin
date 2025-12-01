@@ -24,19 +24,33 @@ boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 6)],
 child: Column(
 crossAxisAlignment: CrossAxisAlignment.start,
 children: [
-Expanded(
-child: Center(child: Icon(Icons.fastfood, size: 46, color: Theme.of(context).primaryColor)),
+Flexible(
+  child: Center(
+    child: Icon(Icons.fastfood, size: 40, color: Theme.of(context).primaryColor),
+  ),
 ),
+
 const SizedBox(height: 8),
 Text(nombre, style: const TextStyle(fontWeight: FontWeight.bold)),
 const SizedBox(height: 4),
 Row(
-children: [
-Text('\$${precio.toStringAsFixed(2)}'),
-const Spacer(),
-ElevatedButton(onPressed: () {}, child: const Text('Pedido')),
-],
+  children: [
+    Expanded(
+      child: Text(
+        nombre,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+    ),
+    const SizedBox(width: 4),
+    Text(
+      '\$${precio.toStringAsFixed(2)}',
+      style: const TextStyle(fontSize: 14),
+    ),
+  ],
 )
+
 ],
 ),
 ),

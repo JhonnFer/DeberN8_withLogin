@@ -23,15 +23,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( // 1° widget = Scaffold sirve para la estructura base de una pantalla en Flutter
       appBar: AppBar(
-        title: const Text('App Pedidos'),
+        title: const Text('App Pedidos'),//2° widget= AppBar sirve para Muestra el título y acciones (íconos, menús).
         actions: [
           IconButton(icon: const Icon(Icons.shopping_cart), onPressed: _openSummary),
         ],
       ),
       drawer: Drawer(
-        child: ListView(
+        child: ListView( //3° widget= Drawer sirve para Menú lateral que se despliega desde la izquierda
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
@@ -43,14 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: SafeArea(
+      body: SafeArea( 
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Column(
+          child: Column(  // 4° widget= Column Organiza widgets verticalmente de arriba hacia abajo.
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Row + TextField (tu fragmento completado)
-              Row(
+              // Row + TextField 
+              Row(  //organiza de forma horizontal lo contrario a column
                 children: [
                   Expanded(
                     child: TextField(
@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 12),
 
               // Switch, Checkbox, Radio
-              Container(
+              Container(  // 7°Widget contenedor con estilo. Es el “div” de Flutter.
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.grey.shade100),
                 child: Column(
@@ -81,23 +81,33 @@ class _HomeScreenState extends State<HomeScreen> {
                         Switch(value: entregaDomicilio, onChanged: (v) => setState(() => entregaDomicilio = v)),
                       ],
                     ),
-                    Row(
-                      children: [
-                        Checkbox(value: sinPicante, onChanged: (v) => setState(() => sinPicante = v ?? false)),
-                        const Text('Sin picante'),
-                        const SizedBox(width: 16),
-                        Radio<int>(value: 0, groupValue: tipoEnvio, onChanged: (v) => setState(() => tipoEnvio = v ?? 0)),
-                        const Text('Normal'),
-                        Radio<int>(value: 1, groupValue: tipoEnvio, onChanged: (v) => setState(() => tipoEnvio = v ?? 0)),
-                        const Text('Express'),
-                      ],
-                    ),
-                  ],
+Row(
+  children: [
+    Expanded(
+      child: TextField(
+        decoration: const InputDecoration(
+          hintText: 'Buscar comida...',
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(),
+        ),
+        onChanged: (v) => setState(() => busqueda = v),
+      ),
+    ),
+    const SizedBox(width: 8),
+    Flexible(
+      child: ElevatedButton(
+        onPressed: () {},
+        child: const Text('Buscar'),
+      ),
+    ),
+  ],
+)
+],
                 ),
               ),
               const SizedBox(height: 12),
 
-              // Stack (completado)
+              // Stack  5° sirve para Permite superponer widgets uno encima de otro.Se usa para banners, overlays, imágenes con texto encima
               SizedBox(
                 height: 140,
                 child: Stack(
@@ -109,13 +119,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    Align(
+                    Align( // 8° Posiciona un widget dentro de su contenedor (izquierda, derecha, centro, etc).
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
                           children: [
-                            Container(
+                            Container( // 6° Expanded un widget ocupe todo el espacio disponible en un eje dentro de Row/Column.
                               width: 100,
                               height: 100,
                               decoration: BoxDecoration(
@@ -145,30 +155,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   children: [
                     // Categorías - ListView
-                    Flexible(
-                      flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Categorías', style: TextStyle(fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 8),
-                          Expanded(
-                            child: ListView(
-                              children: const [
-                                ListTile(leading: Icon(Icons.local_pizza), title: Text('Pizzas')),
-                                ListTile(leading: Icon(Icons.ramen_dining), title: Text('Noodles')),
-                                ListTile(leading: Icon(Icons.local_cafe), title: Text('Bebidas')),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                   SizedBox(
+  width: 140,
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const Text('Categorías', style: TextStyle(fontWeight: FontWeight.bold)),
+      const SizedBox(height: 8),
+      Expanded(
+        child: ListView(
+          children: const [
+            ListTile(leading: Icon(Icons.local_pizza), title: Text('Pizzas')),
+            ListTile(leading: Icon(Icons.ramen_dining), title: Text('Postres')),
+            ListTile(leading: Icon(Icons.local_cafe), title: Text('Bebidas')),
+          ],
+        ),
+      ),
+    ],
+  ),
+),
 
-                    const SizedBox(width: 12),
+
+                    const SizedBox(width: 20),
 
                     // Menú - GridView
-                    Flexible(
+                    Flexible(  // 6° Similar a Expanded, pero permite que el widget no esté obligado a ocupar todo el espacio; es más flexible.
                       flex: 2,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: GridView.builder(
                               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                childAspectRatio: 3 / 2,
+                                childAspectRatio: 0.75,
                                 crossAxisSpacing: 8,
                                 mainAxisSpacing: 8,
                               ),

@@ -43,3 +43,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+# Environment variables (NUNCA commitear .env con credenciales)
+.env
+.env.local
+.env.*.local
+
+# Configuración local
+*.local

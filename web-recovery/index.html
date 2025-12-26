@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Pedidos - Autenticación</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo">🍔</div>
+            <h1>App Pedidos</h1>
+        </div>
+
+        <!-- ESTADO 1: VALIDANDO TOKEN -->
+        <div id="validating" class="state active">
+            <div class="spinner"></div>
+            <p>Validando tu enlace...</p>
+        </div>
+
+        <!-- ESTADO 2: FORMULARIO RESET PASSWORD -->
+        <div id="resetForm" class="state">
+            <h2>Restablecer Contraseña</h2>
+            <p class="subtitle">Ingresa una nueva contraseña para tu cuenta</p>
+
+            <form id="resetPasswordForm">
+                <div class="form-group">
+                    <label for="newPassword">Nueva Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="newPassword" placeholder="Mínimo 6 caracteres" required>
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('newPassword')">
+                            👁️
+                        </button>
+                    </div>
+                    <small id="passwordError" class="error-text"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirmPassword" placeholder="Repite la contraseña" required>
+                        <button type="button" class="toggle-password"
+                            onclick="togglePasswordVisibility('confirmPassword')">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="submitBtn">
+                    Restablecer Contraseña
+                </button>
+            </form>
+        </div>
+
+        <!-- ESTADO 3: CONFORMAR PASSWORD (NUEVO USUARIO) -->
+        <div id="setPasswordForm" class="state">
+            <h2>Confirmar tu Contraseña</h2>
+            <p class="subtitle">Crea una contraseña para tu cuenta de App Pedidos</p>
+
+            <form id="setPasswordFormElement">
+                <div class="form-group">
+                    <label for="setupPassword">Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="setupPassword" placeholder="Mínimo 6 caracteres" required>
+                        <button type="button" class="toggle-password"
+                            onclick="togglePasswordVisibility('setupPassword')">
+                            👁️
+                        </button>
+                    </div>
+                    <small id="setupPasswordError" class="error-text"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="setupConfirmPassword">Confirmar Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="setupConfirmPassword" placeholder="Repite la contraseña" required>
+                        <button type="button" class="toggle-password"
+                            onclick="togglePasswordVisibility('setupConfirmPassword')">
+                            👁️
+                        </button>
+                    </div>
+                    <small id="setupConfirmError" class="error-text"></small>
+                </div>
+
+                <button type="submit" class="btn-primary" id="setupSubmitBtn">
+                    Confirmar Contraseña
+                </button>
+            </form>
+        </div>
+
+        <!-- ESTADO 4: ENVIANDO -->
+        <div id="sending" class="state">
+            <div class="spinner"></div>
+            <p id="sendingText">Actualizando tu contraseña...</p>
+        </div>
+
+        <!-- ESTADO 5: ÉXITO -->
+        <div id="success" class="state">
+            <div class="success-icon">✅</div>
+            <h2>¡Contraseña Actualizada!</h2>
+            <p>Tu contraseña ha sido actualizada exitosamente.</p>
+            <p class="subtitle">Puedes volver a la app e iniciar sesión.</p>
+
+            <button class="btn-primary" onclick="closeWindow()">
+                Ir a la App
+            </button>
+            <a href="#" class="btn-secondary" onclick="event.preventDefault(); location.href='/'">
+                Ir al Inicio
+            </a>
+        </div>
+
+        <!-- ESTADO 6: ERROR -->
+        <div id="error" class="state">
+            <div class="error-icon">❌</div>
+            <h2>Algo Salió Mal</h2>
+            <p id="errorMessage">El enlace que usaste es inválido o ha expirado.</p>
+
+            <button class="btn-primary" onclick="reloadPage()">
+                Intentar de Nuevo
+            </button>
+        </div>
+
+        <!-- ESTADO 7: TOKEN INVÁLIDO -->
+        <div id="invalidToken" class="state">
+            <div class="error-icon">⚠️</div>
+            <h2>Enlace Inválido</h2>
+            <p>El enlace que usaste no es válido o ha expirado.</p>
+            <p class="subtitle">Los enlaces expiran después de 1 hora.</p>
+
+            <button class="btn-primary" onclick="window.close()">
+                Cerrar
+            </button>
+        </div>
+    </div>
+
+    <!-- SUPABASE CLIENT -->
+    <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth-script.js"></script>
+</body>
+
+</html>

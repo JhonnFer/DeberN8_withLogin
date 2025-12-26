@@ -1,0 +1,507 @@
+/* ========================================
+   VARIABLES GLOBALES
+   ======================================== */
+
+:root {
+    --primary-color: #FF6B35;
+    --primary-dark: #E85A25;
+    --success-color: #10B981;
+    --error-color: #EF4444;
+    --warning-color: #F59E0B;
+    --bg-light: #F9FAFB;
+    --bg-white: #FFFFFF;
+    --text-dark: #1F2937;
+    --text-gray: #6B7280;
+    --border-color: #E5E7EB;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* ========================================
+   RESET Y ESTILOS BASE
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: var(--text-dark);
+}
+
+/* ========================================
+   CONTENEDOR PRINCIPAL
+   ======================================== */
+
+.container {
+    width: 100%;
+    max-width: 450px;
+}
+
+.card {
+    background: var(--bg-white);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo {
+    font-size: 48px;
+    margin-bottom: 12px;
+    animation: bounce 0.6s ease-out;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.header .subtitle {
+    font-size: 14px;
+    color: var(--text-gray);
+    font-weight: 500;
+}
+
+/* ========================================
+   ESTADOS
+   ======================================== */
+
+.state {
+    display: block;
+}
+
+.state.hidden {
+    display: none;
+}
+
+/* ========================================
+   FORMULARIO
+   ======================================== */
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+input[type="password"],
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 12px 40px 12px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: var(--bg-light);
+}
+
+input[type="password"]:focus,
+input[type="text"]:focus,
+input[type="email"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: var(--bg-white);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+input::placeholder {
+    color: var(--text-gray);
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 6px;
+    transition: transform 0.2s ease;
+}
+
+.toggle-password:hover {
+    transform: scale(1.2);
+}
+
+input[type="password"]:-webkit-autofill,
+input[type="password"]:-webkit-autofill:hover,
+input[type="password"]:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 30px var(--bg-light) inset !important;
+    -webkit-text-fill-color: var(--text-dark) !important;
+}
+
+small {
+    display: block;
+    font-size: 12px;
+    color: var(--text-gray);
+    margin-top: 4px;
+}
+
+/* ========================================
+   ERRORES
+   ======================================== */
+
+.error {
+    background-color: #FEE2E2;
+    border: 1px solid #FECACA;
+    color: #DC2626;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    animation: shake 0.4s ease;
+}
+
+.error.hidden {
+    display: none;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+#passwordError {
+    margin-bottom: 20px;
+}
+
+/* ========================================
+   BOTONES
+   ======================================== */
+
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px rgba(255, 107, 53, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+form .btn-primary {
+    margin-top: 8px;
+}
+
+/* ========================================
+   SPINNER
+   ======================================== */
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 20px auto;
+}
+
+.spinner.small {
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--border-color);
+    border-top: 3px solid var(--primary-color);
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========================================
+   ESTADOS VISUALES
+   ======================================== */
+
+.success-icon,
+.error-icon {
+    font-size: 64px;
+    text-align: center;
+    margin-bottom: 16px;
+    animation: popIn 0.5s ease-out;
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#success h2,
+#error h2 {
+    font-size: 22px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+#success p,
+#error p {
+    text-align: center;
+    color: var(--text-gray);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.info {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px !important;
+    font-size: 13px;
+}
+
+.error-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.error-actions .btn-primary {
+    flex: 1;
+}
+
+/* ========================================
+   HELP TEXT
+   ======================================== */
+
+.help-text {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-gray);
+    margin-top: 20px;
+}
+
+.help-text a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.help-text a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.footer {
+    text-align: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-color);
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 480px) {
+    .card {
+        padding: 32px 20px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    input[type="password"],
+    input[type="text"],
+    input[type="email"] {
+        font-size: 16px;
+        /* Evita zoom en iOS */
+        padding: 14px 40px 14px 14px;
+    }
+
+    .btn-primary {
+        padding: 16px;
+        font-size: 16px;
+    }
+
+    .success-icon,
+    .error-icon {
+        font-size: 48px;
+    }
+
+    #success h2,
+    #error h2 {
+        font-size: 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================
+   TEMA OSCURO (Opcional)
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    }
+
+    .card {
+        background: #2d2d2d;
+        color: #f0f0f0;
+    }
+
+    .header h1,
+    label,
+    .text-dark {
+        color: #f0f0f0;
+    }
+
+    input[type="password"],
+    input[type="text"],
+    input[type="email"] {
+        background: #3d3d3d;
+        border-color: #4d4d4d;
+        color: #f0f0f0;
+    }
+
+    input[type="password"]:focus,
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+        background: #3d3d3d;
+        border-color: var(--primary-color);
+    }
+
+    input::placeholder {
+        color: #a0a0a0;
+    }
+
+    .footer {
+        border-color: #4d4d4d;
+        color: #a0a0a0;
+    }
+}

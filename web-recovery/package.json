@@ -1,0 +1,25 @@
+{
+  "name": "app-pedidos-password-recovery",
+  "version": "1.0.0",
+  "description": "Página de recuperación de contraseña para App Pedidos",
+  "main": "server.js",
+  "engines": {
+    "node": "18.x"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "local": "python -m http.server 8000"
+  },
+  "keywords": [
+    "supabase",
+    "password-reset",
+    "recovery",
+    "express"
+  ],
+  "author": "App Pedidos",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

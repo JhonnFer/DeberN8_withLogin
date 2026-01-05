@@ -26,11 +26,6 @@ final orderDetailsProvider =
   return data != null ? Order.fromMap(data) : null;
 });
 
-// Provider para carrito de compras (estado local)
-final cartProvider = StateNotifierProvider<CartNotifier, CartState>((ref) {
-  return CartNotifier();
-});
-
 class CartItem {
   final int foodItemId;
   final String nombre;
@@ -97,8 +92,11 @@ class CartState {
   }
 }
 
-class CartNotifier extends StateNotifier<CartState> {
-  CartNotifier() : super(CartState());
+class CartNotifier extends Notifier<CartState> {
+  @override
+  CartState build() {
+    return CartState();
+  }
 
   void addItem(CartItem item) {
     final existingIndex =
@@ -158,3 +156,8 @@ class CartNotifier extends StateNotifier<CartState> {
     state = CartState();
   }
 }
+
+// Provider para carrito de compras (estado local)
+final cartProvider = NotifierProvider<CartNotifier, CartState>(() {
+  return CartNotifier();
+});

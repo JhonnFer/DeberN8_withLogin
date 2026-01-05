@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -103,8 +104,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, '/forgot-password'),
+                  onPressed: () => context.pushNamed('forgot-password'),
                   child: const Text('¿Olvidaste tu contraseña?'),
                 ),
               ),
@@ -143,7 +143,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 children: [
                   const Text('¿No tienes cuenta? '),
                   TextButton(
-                    onPressed: () => Navigator.pushNamed(context, '/signup'),
+                    onPressed: () => context.pushNamed('signup'),
                     child: const Text('Regístrate',
                         style: TextStyle(fontWeight: FontWeight.bold)),
                   ),

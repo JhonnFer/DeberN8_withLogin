@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../../providers/auth_provider.dart';
 import '../models/food_item.dart';
 import '../widgets/food_card.dart';
 import '../widgets/order_summary.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool entregaDomicilio = true;
   bool sinPicante = false;
   int tipoEnvio = 0; // 0 normal, 1 express
@@ -23,34 +26,62 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold( // 1° widget = Scaffold sirve para la estructura base de una pantalla en Flutter
+    return Scaffold(
+      // 1° widget = Scaffold sirve para la estructura base de una pantalla en Flutter
       appBar: AppBar(
-        title: const Text('App Pedidos'),//2° widget= AppBar sirve para Muestra el título y acciones (íconos, menús).
+        title: const Text(
+            'App Pedidos'), //2° widget= AppBar sirve para Muestra el título y acciones (íconos, menús).
         actions: [
-          IconButton(icon: const Icon(Icons.shopping_cart), onPressed: _openSummary),
+          IconButton(
+              icon: const Icon(Icons.shopping_cart), onPressed: _openSummary),
         ],
       ),
       drawer: Drawer(
-        child: ListView( //3° widget= Drawer sirve para Menú lateral que se despliega desde la izquierda
+        child: ListView(
+          //3° widget= Drawer sirve para Menú lateral que se despliega desde la izquierda
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
               decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-              child: const Text('Menú', style: TextStyle(color: Colors.white, fontSize: 20)),
+              child: const Text('Menú',
+                  style: TextStyle(color: Colors.white, fontSize: 20)),
             ),
-            ListTile(leading: const Icon(Icons.home), title: const Text('Inicio'), onTap: () => Navigator.pop(context)),
-            ListTile(leading: const Icon(Icons.person), title: const Text('Perfil'), onTap: () {}),
+            ListTile(
+                leading: const Icon(Icons.home),
+                title: const Text('Inicio'),
+                onTap: () => Navigator.pop(context)),
+            ListTile(
+                leading: const Icon(Icons.person),
+                title: const Text('Perfil'),
+                onTap: () {}),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: const Text('Cerrar Sesión',
+                  style: TextStyle(color: Colors.red)),
+              onTap: () async {
+                Navigator.pop(context);
+                final loginNotifier =
+                    ref.read(loginStateNotifierProvider.notifier);
+                await loginNotifier.logout();
+                if (mounted) {
+                  context.goNamed('login');
+                }
+              },
+            ),
           ],
         ),
       ),
-      body: SafeArea( 
+      body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Column(  // 4° widget= Column Organiza widgets verticalmente de arriba hacia abajo.
+          child: Column(
+            // 4° widget= Column Organiza widgets verticalmente de arriba hacia abajo.
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Row + TextField 
-              Row(  //organiza de forma horizontal lo contrario a column
+              // Row + TextField
+              Row(
+                //organiza de forma horizontal lo contrario a column
                 children: [
                   Expanded(
                     child: TextField(
@@ -69,40 +100,46 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 12),
 
               // Switch, Checkbox, Radio
-              Container(  // 7°Widget contenedor con estilo. Es el “div” de Flutter.
+              Container(
+                // 7°Widget contenedor con estilo. Es el “div” de Flutter.
                 padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.grey.shade100),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.grey.shade100),
                 child: Column(
                   children: [
                     Row(
                       children: [
                         const Text('Entrega a domicilio'),
                         const Spacer(),
-                        Switch(value: entregaDomicilio, onChanged: (v) => setState(() => entregaDomicilio = v)),
+                        Switch(
+                            value: entregaDomicilio,
+                            onChanged: (v) =>
+                                setState(() => entregaDomicilio = v)),
                       ],
                     ),
-Row(
-  children: [
-    Expanded(
-      child: TextField(
-        decoration: const InputDecoration(
-          hintText: 'Buscar comida...',
-          prefixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(),
-        ),
-        onChanged: (v) => setState(() => busqueda = v),
-      ),
-    ),
-    const SizedBox(width: 8),
-    Flexible(
-      child: ElevatedButton(
-        onPressed: () {},
-        child: const Text('Buscar'),
-      ),
-    ),
-  ],
-)
-],
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              hintText: 'Buscar comida...',
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(),
+                            ),
+                            onChanged: (v) => setState(() => busqueda = v),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: const Text('Buscar'),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
               const SizedBox(height: 12),
@@ -119,26 +156,30 @@ Row(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    Align( // 8° Posiciona un widget dentro de su contenedor (izquierda, derecha, centro, etc).
+                    Align(
+                      // 8° Posiciona un widget dentro de su contenedor (izquierda, derecha, centro, etc).
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
                           children: [
-                            Container( // 6° Expanded un widget ocupe todo el espacio disponible en un eje dentro de Row/Column.
+                            Container(
+                              // 6° Expanded un widget ocupe todo el espacio disponible en un eje dentro de Row/Column.
                               width: 100,
                               height: 100,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Icon(Icons.fastfood, size: 48, color: Colors.grey),
+                              child: const Icon(Icons.fastfood,
+                                  size: 48, color: Colors.grey),
                             ),
                             const SizedBox(width: 12),
                             const Expanded(
                               child: Text(
                                 'Promoción: Combo Familiar - 20% OFF',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
@@ -155,40 +196,49 @@ Row(
                 child: Row(
                   children: [
                     // Categorías - ListView
-                   SizedBox(
-  width: 140,
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const Text('Categorías', style: TextStyle(fontWeight: FontWeight.bold)),
-      const SizedBox(height: 8),
-      Expanded(
-        child: ListView(
-          children: const [
-            ListTile(leading: Icon(Icons.local_pizza), title: Text('Pizzas')),
-            ListTile(leading: Icon(Icons.ramen_dining), title: Text('Postres')),
-            ListTile(leading: Icon(Icons.local_cafe), title: Text('Bebidas')),
-          ],
-        ),
-      ),
-    ],
-  ),
-),
-
+                    SizedBox(
+                      width: 140,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Categorías',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 8),
+                          Expanded(
+                            child: ListView(
+                              children: const [
+                                ListTile(
+                                    leading: Icon(Icons.local_pizza),
+                                    title: Text('Pizzas')),
+                                ListTile(
+                                    leading: Icon(Icons.ramen_dining),
+                                    title: Text('Postres')),
+                                ListTile(
+                                    leading: Icon(Icons.local_cafe),
+                                    title: Text('Bebidas')),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
                     const SizedBox(width: 20),
 
                     // Menú - GridView
-                    Flexible(  // 6° Similar a Expanded, pero permite que el widget no esté obligado a ocupar todo el espacio; es más flexible.
+                    Flexible(
+                      // 6° Similar a Expanded, pero permite que el widget no esté obligado a ocupar todo el espacio; es más flexible.
                       flex: 2,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Menú', style: TextStyle(fontWeight: FontWeight.bold)),
+                          const Text('Menú',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
                           const SizedBox(height: 8),
                           Expanded(
                             child: GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 childAspectRatio: 0.75,
                                 crossAxisSpacing: 8,
@@ -197,7 +247,10 @@ Row(
                               itemCount: menu.length,
                               itemBuilder: (context, index) {
                                 final item = menu[index];
-                                if (busqueda.isNotEmpty && !item.nombre.toLowerCase().contains(busqueda.toLowerCase())) {
+                                if (busqueda.isNotEmpty &&
+                                    !item.nombre
+                                        .toLowerCase()
+                                        .contains(busqueda.toLowerCase())) {
                                   return const SizedBox.shrink();
                                 }
                                 return FoodCard(
@@ -206,7 +259,10 @@ Row(
                                   onTap: () => Navigator.pushNamed(
                                     context,
                                     '/details',
-                                    arguments: {'nombre': item.nombre, 'precio': item.precio},
+                                    arguments: {
+                                      'nombre': item.nombre,
+                                      'precio': item.precio
+                                    },
                                   ),
                                 );
                               },
@@ -227,7 +283,10 @@ Row(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              ElevatedButton.icon(onPressed: _openSummary, icon: const Icon(Icons.receipt_long), label: const Text('Resumen pedido')),
+              ElevatedButton.icon(
+                  onPressed: _openSummary,
+                  icon: const Icon(Icons.receipt_long),
+                  label: const Text('Resumen pedido')),
               const SizedBox(width: 12),
               OutlinedButton(onPressed: () {}, child: const Text('Limpiar')),
               const Spacer(),
@@ -240,6 +299,7 @@ Row(
   }
 
   void _openSummary() {
-    showModalBottomSheet(context: context, builder: (_) => const OrderSummary());
+    showModalBottomSheet(
+        context: context, builder: (_) => const OrderSummary());
   }
 }

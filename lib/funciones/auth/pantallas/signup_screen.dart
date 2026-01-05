@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../providers/auth_provider.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
@@ -38,7 +39,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           const SnackBar(
               content: Text('Cuenta creada exitosamente. Inicia sesión.')),
         );
-        Navigator.pushReplacementNamed(context, '/login');
+        context.goNamed('login');
       }
     }
   }
@@ -52,7 +53,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         title: const Text('Crear Cuenta'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
         ),
       ),
       body: SingleChildScrollView(

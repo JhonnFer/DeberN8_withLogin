@@ -19,36 +19,6 @@ final authStateProvider = StreamProvider<AuthState>((ref) {
   return supabaseService.authStateChanges();
 });
 
-// Provider para controlar el estado de login
-final loginStateNotifierProvider =
-    StateNotifierProvider<LoginStateNotifier, LoginState>((ref) {
-  final supabaseService = ref.watch(supabaseServiceProvider);
-  return LoginStateNotifier(supabaseService);
-});
-
-// Provider para los items del menú
-final foodItemsProvider =
-    FutureProvider<List<Map<String, dynamic>>>((ref) async {
-  final supabaseService = ref.watch(supabaseServiceProvider);
-  return await supabaseService.getAllFoodItems();
-});
-
-// Provider para los pedidos del usuario actual
-final userOrdersProvider =
-    FutureProvider<List<Map<String, dynamic>>>((ref) async {
-  final supabaseService = ref.watch(supabaseServiceProvider);
-  final userAsync = ref.watch(currentUserProvider);
-
-  return userAsync.when(
-    data: (user) async {
-      if (user == null) return [];
-      return await supabaseService.getUserOrders(user.id);
-    },
-    loading: () => [],
-    error: (_, __) => [],
-  );
-});
-
 // Clase para manejar el estado del login
 class LoginState {
   final bool isLoading;
@@ -74,16 +44,20 @@ class LoginState {
   }
 }
 
-// Notifier para manejar el login
-class LoginStateNotifier extends StateNotifier<LoginState> {
-  final SupabaseService _supabaseService;
+// Notifier simplificado para manejar el login
+class LoginStateNotifier extends Notifier<LoginState> {
+  LoginStateNotifier() : super();
 
-  LoginStateNotifier(this._supabaseService) : super(LoginState());
+  @override
+  LoginState build() {
+    return LoginState();
+  }
 
   Future<bool> login(String email, String password) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      await _supabaseService.signIn(email, password);
+      final supabaseService = ref.watch(supabaseServiceProvider);
+      await supabaseService.signIn(email, password);
       state = state.copyWith(isLoading: false, isSuccess: true);
       return true;
     } catch (e) {
@@ -98,7 +72,8 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
   Future<bool> signup(String email, String password) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      await _supabaseService.signUp(email, password);
+      final supabaseService = ref.watch(supabaseServiceProvider);
+      await supabaseService.signUp(email, password);
       state = state.copyWith(isLoading: false, isSuccess: true);
       return true;
     } catch (e) {
@@ -113,7 +88,8 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
   Future<bool> resetPassword(String email) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      await _supabaseService.resetPassword(email);
+      final supabaseService = ref.watch(supabaseServiceProvider);
+      await supabaseService.resetPassword(email);
       state = state.copyWith(
         isLoading: false,
         isSuccess: true,
@@ -131,7 +107,8 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
 
   Future<void> logout() async {
     try {
-      await _supabaseService.signOut();
+      final supabaseService = ref.watch(supabaseServiceProvider);
+      await supabaseService.signOut();
       state = LoginState();
     } catch (e) {
       state = state.copyWith(error: 'Error al cerrar sesión: ${e.toString()}');
@@ -142,3 +119,32 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
     state = state.copyWith(error: null);
   }
 }
+
+// Provider para controlar el estado de login
+final loginStateNotifierProvider =
+    NotifierProvider<LoginStateNotifier, LoginState>(() {
+  return LoginStateNotifier();
+});
+
+// Provider para los items del menú
+final foodItemsProvider =
+    FutureProvider<List<Map<String, dynamic>>>((ref) async {
+  final supabaseService = ref.watch(supabaseServiceProvider);
+  return await supabaseService.getAllFoodItems();
+});
+
+// Provider para los pedidos del usuario actual
+final userOrdersProvider =
+    FutureProvider<List<Map<String, dynamic>>>((ref) async {
+  final supabaseService = ref.watch(supabaseServiceProvider);
+  final userAsync = ref.watch(currentUserProvider);
+
+  return userAsync.when(
+    data: (user) async {
+      if (user == null) return [];
+      return await supabaseService.getUserOrders(user.id);
+    },
+    loading: () => [],
+    error: (_, __) => [],
+  );
+});
